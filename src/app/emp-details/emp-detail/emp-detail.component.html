@@ -1,0 +1,38 @@
+
+<mat-card >  
+    <!-- Title of an Card -->  
+    <mat-card-title>  
+        Angular Material Component With Angular 5  
+    </mat-card-title>  
+  
+    <!-- Actual content starts from here -->  
+    <mat-card-content>  
+        <mat-form-field >
+            <mat-label>Select Pays</mat-label>
+            <mat-select  name="pays" [(ngModel)]="selectedPays" (ngModelChange)="selectedPays= $event" (ngModelChange)="onModelChange()" #pays="ngModel" >
+            <mat-option *ngFor="let pays of paysService.liste " 
+            [value]="pays.IdPays">
+            {{pays.NomPays}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+       <mat-form-field *ngIf="posteService.postes">
+        <mat-label>Select Poste</mat-label>
+                        <mat-select name="poste" [(ngModel)]="selectedPoste" (ngModelChange)="selectedPoste= $event" (ngModelChange)="onPosteChange()" #poste="ngModel">
+                        <mat-option *ngFor="let poste of posteService.postes " [value]="poste.IdPoste">
+                            {{poste.NomPoste}}
+                        </mat-option>
+                        </mat-select>
+                        </mat-form-field>
+                       
+                        <mat-form-field *ngIf="situationService.situations">
+                                <mat-label>Select Version</mat-label>
+                                                <mat-select disabled >
+                                                <mat-option *ngFor="let situ of situationService.situations " [value]="situ.IdSituation">
+                                                 Version :  {{situ.NumVersion}}
+                                                </mat-option>
+                                                </mat-select>
+                          </mat-form-field>
+    </mat-card-content> 
+     
+</mat-card>  

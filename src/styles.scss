@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~bootstrap/scss/bootstrap.scss";
+body{
+    margin: 0;
+}
+html, body{
+  background-color: #f8f9fa;
+}
+.container{
+  margin-top: 41px;
+}
+.sidenav-container { 
+    height: 100%;
+    
+  }
+  
+  .sidenav {
+    width: 250px;
+  }
+  
+  .sidenav .mat-toolbar {
+    background: #3f51b5;
+  }
+  
+  .mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .mat-sidenav-content{
+    position: sticky;
+  }
+  .mat-sidenav-content {
+    width: 100%;
+  }
+
+  mat-form-field {
+    width: 70%;
+    font-size: 17px !important;
+  }
