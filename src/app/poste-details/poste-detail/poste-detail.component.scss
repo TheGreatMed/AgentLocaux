@@ -1,0 +1,26 @@
+
+mat-card-title{
+    text-align: center;
+    background-color: rgba(135, 173, 243, 0.932);
+    border-radius: 5px 5px 5px 5px;
+}
+mat-card{
+    width: 100% !important;
+    background-color: #fefeff;
+    box-shadow: 20px 5px 5px 5px;
+}
+table{
+    width: 100% !important;
+    height: 100%;
+}
+.hide{
+    display: none;
+}
+mat-footer-row mat-footer-cell{
+    justify-content: center;
+    font-style: italic;
+}
+mat-form-field {
+    width: 100%;
+    font-size: 17px !important;
+  }

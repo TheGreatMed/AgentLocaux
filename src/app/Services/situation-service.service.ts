@@ -11,6 +11,7 @@ export class SituationServiceService {
   }
 
   situations:Situation[];
+  situation:Situation= new Situation();
 
   getAllByIdPoste(id){
     this.http.get('http://localhost:61823/api/Situation/find/'+id)
@@ -18,4 +19,11 @@ export class SituationServiceService {
     .then(res => this.situations= res as Situation[]);
   }
 
+  getOneSituation(id){
+    return this.http.get('http://localhost:61823/api/Situation/'+id)
+    }
+    
+  validate(){
+    return this.http.put('http://localhost:61823/api/Situation/valide/'+this.situation.IdSituation,this.situation);
+  }
 }

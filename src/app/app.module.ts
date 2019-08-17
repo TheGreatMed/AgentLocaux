@@ -1,3 +1,4 @@
+import { EmpServiceService } from './Services/emp-service.service';
 
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,11 +20,14 @@ import {MatInputModule} from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MatSortModule} from '@angular/material/sort';
+import { ToastrModule } from 'ngx-toastr';
 
 import { EmpDetailComponent } from './emp-details/emp-detail/emp-detail.component';
 import { EmpDetailsComponent } from './emp-details/emp-details.component';
@@ -32,6 +36,10 @@ import { EmpListComponent } from './emp-details/emp-list/emp-list.component';
 import {PaysServiceService} from './Services/pays-service.service';
 import {PosteServiceService} from './Services/poste-service.service';
 import { SituationServiceService } from './Services/situation-service.service';
+import { PosteDetailsComponent } from './poste-details/poste-details.component';
+import { PosteDetailComponent } from './poste-details/poste-detail/poste-detail.component';
+import { PosteListComponent } from './poste-details/poste-list/poste-list.component';
+
 
 
 @NgModule({
@@ -40,6 +48,9 @@ import { SituationServiceService } from './Services/situation-service.service';
     EmpDetailsComponent,
     EmpDetailComponent,
     EmpListComponent,
+    PosteDetailsComponent,
+    PosteDetailComponent,
+    PosteListComponent,
     
   ],
   imports: [
@@ -63,10 +74,13 @@ import { SituationServiceService } from './Services/situation-service.service';
     HttpClientModule,
     FormsModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatGridListModule,
+    MatPaginatorModule,
+    ToastrModule.forRoot()
     
   ],
-  providers: [PaysServiceService,PosteServiceService,SituationServiceService],
+  providers: [PaysServiceService,PosteServiceService,SituationServiceService,EmpServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

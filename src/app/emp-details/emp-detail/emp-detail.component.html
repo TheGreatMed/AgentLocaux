@@ -1,38 +1,70 @@
 
-<mat-card >  
+<mat-card  >  
     <!-- Title of an Card -->  
     <mat-card-title>  
-        Angular Material Component With Angular 5  
+        Donnee des Employees
     </mat-card-title>  
   
     <!-- Actual content starts from here -->  
     <mat-card-content>  
-        <mat-form-field >
-            <mat-label>Select Pays</mat-label>
-            <mat-select  name="pays" [(ngModel)]="selectedPays" (ngModelChange)="selectedPays= $event" (ngModelChange)="onModelChange()" #pays="ngModel" >
-            <mat-option *ngFor="let pays of paysService.liste " 
-            [value]="pays.IdPays">
-            {{pays.NomPays}}
-            </mat-option>
-            </mat-select>
-        </mat-form-field>
-       <mat-form-field *ngIf="posteService.postes">
-        <mat-label>Select Poste</mat-label>
-                        <mat-select name="poste" [(ngModel)]="selectedPoste" (ngModelChange)="selectedPoste= $event" (ngModelChange)="onPosteChange()" #poste="ngModel">
-                        <mat-option *ngFor="let poste of posteService.postes " [value]="poste.IdPoste">
-                            {{poste.NomPoste}}
+        <table class="table" id="tab1">
+            <tr>
+                <td> <mat-form-field >
+                        <mat-label>Select Pays</mat-label>
+                        <mat-select  name="pays" [(ngModel)]="selectedPays" (ngModelChange)="selectedPays= $event" (ngModelChange)="onModelChange()" #pays="ngModel" >
+                        <mat-option *ngFor="let pays of paysService.liste " 
+                        [value]="pays.IdPays">
+                        {{pays.NomPays}}
                         </mat-option>
                         </mat-select>
-                        </mat-form-field>
-                       
-                        <mat-form-field *ngIf="situationService.situations">
+                    </mat-form-field></td>
+                <td>
+                        <mat-form-field >
+                                <mat-label>Select Poste</mat-label>
+                                                <mat-select name="poste" [(ngModel)]="selectedPoste" (ngModelChange)="selectedPoste= $event" (ngModelChange)="onPosteChange()" #poste="ngModel">
+                                                <mat-option *ngFor="let poste of posteService.postes " [value]="poste.IdPoste">
+                                                    {{poste.NomPoste}}
+                                                </mat-option>
+                                                </mat-select>
+                                                </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                        <mat-form-field >
                                 <mat-label>Select Version</mat-label>
-                                                <mat-select disabled >
+                                                <mat-select name="situation" #situation="ngModel" [(ngModel)]="selectedSit" (ngModelChange)="selectedSit= $event" (ngModelChange)="onSitChange()">
                                                 <mat-option *ngFor="let situ of situationService.situations " [value]="situ.IdSituation">
                                                  Version :  {{situ.NumVersion}}
                                                 </mat-option>
                                                 </mat-select>
                           </mat-form-field>
+                </td>
+                <td>{{Situation.Etat}}</td>
+            </tr>
+        </table>
+       
+        <table *ngIf="Situation.IdSituation" class="table table-hover" id="tab">
+                <tr *ngFor="let emp of empService.employees">
+                    <td >{{emp.Nom}}</td>
+                    <td >{{emp.Prenom}}</td>
+                    <td >{{emp.SalaireDH}}</td>
+                    <td>{{emp.Gratification}}</td>
+                    <td>{{emp.DateRecrutement | date:'short'}}</td>
+                    <td>{{emp.Observation}}</td>
+                </tr>
+       </table>
+       <button class="btn btn-success" *ngIf="Situation.IdSituation"
+       [disabled]="Situation.Etat==='Version valide'" 
+       >Nouveau Employee</button>
+       
+<form #form="ngForm" (submit)="validate(form)">
+    <input type="hidden" [value]="situationService.situation.IdSituation" >
+    <button class="btn btn-info" *ngIf="Situation.IdSituation"
+       [disabled]="Situation.Etat==='Version valide'"
+        >Valider</button> 
+</form>                
+                      
     </mat-card-content> 
      
 </mat-card>  

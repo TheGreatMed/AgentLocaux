@@ -1,0 +1,100 @@
+
+  <div class="row">
+    <div class="col-4 mt-5  ">
+               
+        <mat-card >
+          <mat-card-title class="primary">Nouveau Poste</mat-card-title>
+          <mat-card-content  align="center">
+          <form #form="ngForm" autocomplete="off"
+     (ngSubmit)="onSubmit(form)">
+
+      <input type="hidden" [value]="posteService.poste.IdPoste" > 
+      
+      <mat-form-field>
+              <input matInput type="text" placeholder="Nom de Poste"  id="name" name="NomPoste" 
+               required #NomPoste="ngModel" [(ngModel)]="posteService.poste.NomPoste">
+             
+             
+      </mat-form-field>
+      <mat-form-field>
+              <input matInput type="text" placeholder="Code de Poste" name="CodePoste"
+              required #CodePoste="ngModel" [(ngModel)]="posteService.poste.CodePoste">
+                  
+            </mat-form-field>
+            
+            <mat-form-field>
+              <input matInput type="text" placeholder="Ville de Poste" name="VillePoste"
+              required #VillePoste="ngModel" [(ngModel)]="posteService.poste.VillePost">
+                  
+            </mat-form-field>
+
+            <mat-form-field>
+                  <mat-label>Pays</mat-label>
+                  <mat-select required [(ngModel)]="posteService.poste.IdPays"   name="pays" #pays="ngModel">
+                  <mat-option  
+                  *ngFor="let pays of paysService.liste " [value]="pays.IdPays">{{pays.NomPays}}</mat-option>
+                  
+               </mat-select> 
+                  </mat-form-field>
+
+<mat-card-actions align="center">
+      <button id="b1" class="btn btn-success btn-block"  *ngIf="!posteService.test" color="primary" [disabled]="form.invalid">
+          <span class="fas fa-plus"></span> 
+        Ajouter</button>
+      <button id="b3" class="btn btn-info btn-block" *ngIf="posteService.test" color="accent" [disabled]="form.invalid" >
+        <span class="fas fa-edit"></span>
+        Modifier</button> 
+    </mat-card-actions>
+   
+</form>
+<button  id="b2" mat-raised-button color="accent" (click)=onEfface(form)>Effacer</button>
+</mat-card-content>
+        </mat-card>
+    </div>
+            <br>
+            <div class="col-8 mt-5" >
+              <div class="mat-elevation-z8">
+                <mat-table [dataSource]="dataSource" matSort>
+                 <ng-container matColumnDef="NomPoste">
+                         <mat-header-cell *matHeaderCellDef mat-sort-header>Nom de Poste</mat-header-cell>
+                         <mat-cell *matCellDef="let element">{{element.NomPoste}}</mat-cell> 
+                 </ng-container>
+                 <ng-container matColumnDef="CodePoste">
+                         <mat-header-cell *matHeaderCellDef>Code de Poste</mat-header-cell>
+                         <mat-cell *matCellDef="let element">{{element.CodePoste}}</mat-cell>
+                 </ng-container>
+                 <ng-container matColumnDef="VillePost">
+                         <mat-header-cell *matHeaderCellDef>Ville de Poste</mat-header-cell>
+                         <mat-cell *matCellDef="let element">{{element.VillePost}}</mat-cell>
+                 </ng-container>
+                 <ng-container matColumnDef="actions">
+                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                     <mat-cell *matCellDef="let row">
+                             <button mat-icon-button (click)="populateForm(row)"><mat-icon>launch</mat-icon></button>
+                             <button mat-icon-button color="warn" (click)="onDelete(row)"><mat-icon>delete_outline</mat-icon></button>
+                     </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                     <mat-footer-cell *matFooterCellDef colspan="5">
+                           Pas de Donnes.
+                     </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="loading">
+                     <mat-footer-cell *matFooterCellDef colspan="5">
+                             Loading data....
+                     </mat-footer-cell>
+                </ng-container>
+                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                 <mat-row *matRowDef="let row; columns:displayedColumns;"></mat-row>
+                 <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource != null}"></mat-footer-row>
+                 <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource != null && dataSource.length==0)}"></mat-footer-row>
+                </mat-table>
+                <mat-paginator
+                           [pageSize]="10"
+                           [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+             </mat-paginator>
+             
+             </div>
+             <br>
+            </div>
+        </div>
