@@ -40,7 +40,8 @@
                                                 </mat-select>
                           </mat-form-field>
                 </td>
-                <td>{{Situation.Etat}}</td>
+                <td>Etat de version : <br>
+                <h3>{{Situation.Etat}}</h3></td>
             </tr>
         </table>
        
@@ -54,17 +55,19 @@
                     <td>{{emp.Observation}}</td>
                 </tr>
        </table>
-       <button class="btn btn-success" *ngIf="Situation.IdSituation"
+       <button class="btn btn-success " *ngIf="Situation.IdSituation"
        [disabled]="Situation.Etat==='Version valide'" 
-       >Nouveau Employee</button>
-       
-<form #form="ngForm" (submit)="validate(form)">
-    <input type="hidden" [value]="situationService.situation.IdSituation" >
-    <button class="btn btn-info" *ngIf="Situation.IdSituation"
+       (click)="onCreate()">Nouveau Employee</button>
+
+
+    
+    <button class="btn btn-info offset-sm-1" *ngIf="Situation.Etat==='En cours de modification' "
        [disabled]="Situation.Etat==='Version valide'"
-        >Valider</button> 
-</form>                
-                      
+      (click)="validate()"  >Valider la version</button> 
+     
+      <button class="btn btn-info offset-sm-1" 
+      *ngIf="(situationService.situations?.length === 0 && selectedPoste) || Situation.Etat==='Version valide' "
+        (click)="AddSituation()">Nouvelle version </button> 
     </mat-card-content> 
      
 </mat-card>  

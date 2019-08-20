@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { EmpServiceService } from './../../Services/emp-service.service';
 import { Situation } from './../../Models/situation.model';
 import { SituationServiceService } from './../../Services/situation-service.service';
@@ -5,6 +6,8 @@ import { PosteServiceService } from './../../Services/poste-service.service';
 import { PaysServiceService } from '../../Services/pays-service.service';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog,MatDialogConfig } from '@angular/material/dialog';
+
 
 
 @Component({
@@ -14,10 +17,13 @@ import { NgForm } from '@angular/forms';
 })
 export class EmpDetailComponent implements OnInit {
 
-  constructor(private empService:EmpServiceService,private paysService:PaysServiceService, private posteService:PosteServiceService,private situationService:SituationServiceService) { }
-
+  constructor(private empService:EmpServiceService,private paysService:PaysServiceService, 
+    private posteService:PosteServiceService,private situationService:SituationServiceService,
+    private toastr :ToastrService,private dialog:MatDialog) { }
+   test :boolean;
   ngOnInit() {
     this.paysService.refreshList();
+    this.test=false;
   }
 
   private selectedPays;
@@ -39,10 +45,16 @@ export class EmpDetailComponent implements OnInit {
       console.log(this.selectedPays);
     }
   }
+  
   onPosteChange(){
     if(this.selectedPoste !=null){
       this.situationService.getAllByIdPoste(this.selectedPoste);
-      console.log(this.selectedPoste);
+      
+    
+      this.situationService.situations=null;
+       this.selectedSit=null;
+       this.Situation.Etat=null;
+       this.Situation.IdSituation=null;
       
     }
   }
@@ -55,6 +67,7 @@ export class EmpDetailComponent implements OnInit {
             this.Situation=situation;
             console.log(this.Situation.IdSituation);
             this.empService.get(this.Situation.IdSituation);
+            
         }
        
      });
@@ -62,8 +75,32 @@ export class EmpDetailComponent implements OnInit {
   }
 }
 
-validate(from:NgForm){
-   this.situationService.validate();
+validate(){
+  
+   this.situationService.validate(this.Situation.IdSituation).subscribe(
+    res=>{
+     
+      this.onSitChange();
+    },
+    err=>{
+      console.log(err);
+    }
+  );;
+}
+AddSituation(){
+   this.situationService.postSituation(this.selectedPoste).subscribe(
+     res=>{
+      this.toastr.success('Ajout Avec Success','situation bien ajoute');
+        this.onPosteChange();
+     },
+     err=>{
+       console.log(err);
+     }
+   )
+}
+
+onCreate(){
+  
 }
   
 }

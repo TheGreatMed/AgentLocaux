@@ -31,7 +31,7 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { EmpDetailComponent } from './emp-details/emp-detail/emp-detail.component';
 import { EmpDetailsComponent } from './emp-details/emp-details.component';
-import { EmpListComponent } from './emp-details/emp-list/emp-list.component';
+
 
 import {PaysServiceService} from './Services/pays-service.service';
 import {PosteServiceService} from './Services/poste-service.service';
@@ -47,7 +47,6 @@ import { PosteListComponent } from './poste-details/poste-list/poste-list.compon
     AppComponent,
     EmpDetailsComponent,
     EmpDetailComponent,
-    EmpListComponent,
     PosteDetailsComponent,
     PosteDetailComponent,
     PosteListComponent,
