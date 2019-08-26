@@ -1,6 +1,7 @@
 import { Situation } from './../Models/situation.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Employee } from '../Models/employee.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,13 +13,11 @@ export class SituationServiceService {
 
   situations:Situation[];
   situation:Situation= new Situation();
+  emp:Employee
    idS:number;
    Liste:[];
   getAllByIdPoste(id){
-    this.http.get('http://localhost:61823/api/Situation/find/'+id)
-    .toPromise()
-    .then(res => this.situations= res as Situation[]);
-    console.log(this.situations)
+   return this.http.get('http://localhost:61823/api/Situation/find/'+id)
     
   }
 

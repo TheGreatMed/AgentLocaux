@@ -1,7 +1,7 @@
 export class Situation {
     IdSituation :number;
     NumVersion :number;
-    Etat :number;
+    Etat :String;
     DateCreation :Date;     
     IdPoste :number;
 }

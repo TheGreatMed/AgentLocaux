@@ -34,7 +34,7 @@
                         <mat-form-field >
                                 <mat-label>Select Version</mat-label>
                                                 <mat-select name="situation" #situation="ngModel" [(ngModel)]="selectedSit" (ngModelChange)="selectedSit= $event" (ngModelChange)="onSitChange()">
-                                                <mat-option *ngFor="let situ of situationService.situations " [value]="situ.IdSituation">
+                                                <mat-option *ngFor="let situ of list " [value]="situ.IdSituation">
                                                  Version :  {{situ.NumVersion}}
                                                 </mat-option>
                                                 </mat-select>
@@ -55,19 +55,28 @@
                     <td>{{emp.Observation}}</td>
                 </tr>
        </table>
-       <button class="btn btn-success " *ngIf="Situation.IdSituation"
-       [disabled]="Situation.Etat==='Version valide'" 
-       (click)="onCreate()">Nouveau Employee</button>
-
-
-    
-    <button class="btn btn-info offset-sm-1" *ngIf="Situation.Etat==='En cours de modification' "
-       [disabled]="Situation.Etat==='Version valide'"
-      (click)="validate()"  >Valider la version</button> 
+      <div class="panel-footer">
+            <button class="btn btn-success " *ngIf="Situation.IdSituation"
+            [disabled]="Situation.Etat==='Version valide'" 
+            (click)="onCreate()">Nouveau Employee</button>
      
-      <button class="btn btn-info offset-sm-1" 
-      *ngIf="(situationService.situations?.length === 0 && selectedPoste) || Situation.Etat==='Version valide' "
-        (click)="AddSituation()">Nouvelle version </button> 
+     
+         
+         <button class="btn btn-info" *ngIf="Situation.Etat==='En cours de modification' "
+            [disabled]="Situation.Etat==='Version valide'"
+           (click)="validate()"  >Valider la version</button> 
+          
+           <button class="btn btn-info " 
+           *ngIf="(list?.length === 0 && selectedPoste) || Situation.Etat==='Version valide' "
+             (click)="AddSituation()"
+             [disabled]="test && list?.length !=0 ">Nouvelle version </button> 
+
+      </div>
     </mat-card-content> 
      
 </mat-card>  
+<app-emp-form 
+*ngIf="show"
+[IdPays]=selectedPays
+[IdPoste]=selectedPoste 
+[IdSituation]=selectedSit ></app-emp-form>

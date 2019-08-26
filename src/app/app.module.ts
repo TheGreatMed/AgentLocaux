@@ -39,6 +39,7 @@ import { SituationServiceService } from './Services/situation-service.service';
 import { PosteDetailsComponent } from './poste-details/poste-details.component';
 import { PosteDetailComponent } from './poste-details/poste-detail/poste-detail.component';
 import { PosteListComponent } from './poste-details/poste-list/poste-list.component';
+import { EmpFormComponent } from './emp-details/emp-form/emp-form.component';
 
 
 
@@ -50,6 +51,7 @@ import { PosteListComponent } from './poste-details/poste-list/poste-list.compon
     PosteDetailsComponent,
     PosteDetailComponent,
     PosteListComponent,
+    EmpFormComponent,
     
   ],
   imports: [

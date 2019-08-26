@@ -4,9 +4,10 @@ import { Situation } from './../../Models/situation.model';
 import { SituationServiceService } from './../../Services/situation-service.service';
 import { PosteServiceService } from './../../Services/poste-service.service';
 import { PaysServiceService } from '../../Services/pays-service.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog,MatDialogConfig } from '@angular/material/dialog';
+import { EmpFormComponent } from '../emp-form/emp-form.component';
 
 
 
@@ -21,21 +22,23 @@ export class EmpDetailComponent implements OnInit {
     private posteService:PosteServiceService,private situationService:SituationServiceService,
     private toastr :ToastrService,private dialog:MatDialog) { }
    test :boolean;
+   show:boolean
   ngOnInit() {
     this.paysService.refreshList();
-    this.test=false;
+    this.show=false;
   }
 
-  private selectedPays;
-  private selectedPoste;
-  private selectedSit;
-  Situation:Situation=new Situation();
+   private selectedPays;
+   private selectedPoste;
+   private selectedSit;
+   Situation:Situation=new Situation();
+   list:Situation[];
   onModelChange(){
     if(this.selectedPays != null){
       
        this.posteService.getPosteByIdPays(this.selectedPays);
        console.log(this.selectedPays);
-       this.situationService.situations=null;
+       this.list=null;
        this.selectedSit=null;
        this.selectedPoste=null;
        this.Situation.Etat=null;
@@ -45,13 +48,35 @@ export class EmpDetailComponent implements OnInit {
       console.log(this.selectedPays);
     }
   }
-  
+ 
   onPosteChange(){
     if(this.selectedPoste !=null){
-      this.situationService.getAllByIdPoste(this.selectedPoste);
-      
-    
-      this.situationService.situations=null;
+      this.situationService.getAllByIdPoste(this.selectedPoste).subscribe(
+        (sits:any)=>{
+           this.list=sits;
+           console.log(this.list);
+           if(this.list!=null){
+            this.list.forEach(
+              res=>{
+                if(res.Etat=="En cours de modification"){
+                  this.test=true;
+                } else{
+                  this.test=false;
+                }      
+                 
+              }      
+            )
+           }else{
+             this.test=false;
+           }
+           console.log(this.test)
+        },
+        err=>{
+          console.log(err);
+        }
+      )
+     
+       
        this.selectedSit=null;
        this.Situation.Etat=null;
        this.Situation.IdSituation=null;
@@ -68,6 +93,7 @@ export class EmpDetailComponent implements OnInit {
             console.log(this.Situation.IdSituation);
             this.empService.get(this.Situation.IdSituation);
             
+            
         }
        
      });
@@ -81,6 +107,7 @@ validate(){
     res=>{
      
       this.onSitChange();
+      this.test=false;
     },
     err=>{
       console.log(err);
@@ -92,6 +119,7 @@ AddSituation(){
      res=>{
       this.toastr.success('Ajout Avec Success','situation bien ajoute');
         this.onPosteChange();
+        this.test=false;
      },
      err=>{
        console.log(err);
@@ -100,7 +128,7 @@ AddSituation(){
 }
 
 onCreate(){
-  
+ this.show=true;
 }
   
 }
