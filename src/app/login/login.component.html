@@ -1,0 +1,29 @@
+
+
+<div fxLayout="row" fxLayoutAlign="center center" class="login-main">
+        <mat-card >
+        <mat-card-header >
+          <mat-card-title><h3>Se Connecter</h3></mat-card-title>
+          <hr>
+        </mat-card-header>
+        <mat-card-content >
+         <form autocomplete="off" fxLayout="column" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+            <mat-form-field appearance="outline">
+                <mat-label>Votre Email</mat-label>
+                <input  matInput  name="username" type="email" placeholder="Email" [(ngModel)]="user.Email" required>
+                <mat-icon matSuffix>email</mat-icon>
+              </mat-form-field>
+    
+              <mat-form-field appearance="outline">
+                    <mat-label>Votre mot de passe</mat-label>
+                <input type="password" name="password" matInput placeholder="password" [(ngModel)]="user.Password" required>
+                <mat-icon matSuffix>lock</mat-icon>
+              </mat-form-field>
+             
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" [disabled]="loginForm.invalid">Connecter</button>
+        </mat-card-actions>
+         </form>
+        </mat-card-content>
+        </mat-card>
+ </div>

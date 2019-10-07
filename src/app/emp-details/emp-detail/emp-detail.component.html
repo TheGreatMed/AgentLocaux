@@ -1,5 +1,5 @@
 
-<mat-card  >  
+<mat-card *ngIf="!show" >  
     <!-- Title of an Card -->  
     <mat-card-title>  
         Donnee des Employees
@@ -45,38 +45,214 @@
             </tr>
         </table>
        
-        <table *ngIf="Situation.IdSituation" class="table table-hover" id="tab">
-                <tr *ngFor="let emp of empService.employees">
-                    <td >{{emp.Nom}}</td>
-                    <td >{{emp.Prenom}}</td>
-                    <td >{{emp.SalaireDH}}</td>
-                    <td>{{emp.Gratification}}</td>
-                    <td>{{emp.DateRecrutement | date:'short'}}</td>
-                    <td>{{emp.Observation}}</td>
-                </tr>
-       </table>
+        <div class="mat-elevation-z8">
+                <mat-table [dataSource]="dataSource" matSort>
+                 <ng-container matColumnDef="Nom">
+                         <mat-header-cell *matHeaderCellDef mat-sort-header>Nom de l'employee</mat-header-cell>
+                         <mat-cell *matCellDef="let element">{{element.Nom}}</mat-cell> 
+                 </ng-container>
+                 <ng-container matColumnDef="Prenom">
+                        <mat-header-cell *matHeaderCellDef>Prenom de l'employee</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Prenom}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="SaleD">
+                        <mat-header-cell *matHeaderCellDef>Salaire en devise</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.SalaireDevise |number}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="SaleDH">
+                        <mat-header-cell *matHeaderCellDef>Salaire en DH</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.SalaireDH|number}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="grat">
+                        <mat-header-cell *matHeaderCellDef>Gratification</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.Gratification|number}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dateR">
+                        <mat-header-cell *matHeaderCellDef>Date de recrutement</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.DateRecrutement|date}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dateD">
+                        <mat-header-cell *matHeaderCellDef>Debut d'affectation</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.DateDebut |date}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dateF">
+                        <mat-header-cell *matHeaderCellDef>Fin d'affectation</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.DateFin|date }}</mat-cell>
+                </ng-container>
+                 <ng-container  matColumnDef="actions" >
+                     <mat-header-cell *matHeaderCellDef>Options</mat-header-cell>
+                     <mat-cell *matCellDef="let row">
+                             <button *ngIf="Situation.Etat==='En cours de modification';else noOptions" mat-icon-button (click)="populateForm(row)"><mat-icon>launch</mat-icon></button>
+                             <button *ngIf="Situation.Etat==='En cours de modification'" mat-icon-button color="warn" (click)="onDelete(row)"><mat-icon>delete_outline</mat-icon></button>
+                             <ng-template #noOptions>pas d'option</ng-template>
+                     </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="noData">
+                     <mat-footer-cell *matFooterCellDef colspan="3">
+                           Pas de Donnes.
+                     </mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="loading">
+                     <mat-footer-cell *matFooterCellDef colspan="3">
+                             Loading data....
+                     </mat-footer-cell>
+                </ng-container>
+                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                 <mat-row *matRowDef="let row; columns:displayedColumns;"></mat-row>
+                 <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource != null}"></mat-footer-row>
+                 <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':(dataSource == null || dataSource.data.length > 0 )}"></mat-footer-row>
+                </mat-table>
+                <mat-paginator
+                           [pageSize]="5"
+                           [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+               </mat-paginator>
+            </div>
+            <br>
       <div class="panel-footer">
             <button class="btn btn-success " *ngIf="Situation.IdSituation"
             [disabled]="Situation.Etat==='Version valide'" 
             (click)="onCreate()">Nouveau Employee</button>
-     
-     
-         
+            &nbsp;&nbsp;
          <button class="btn btn-info" *ngIf="Situation.Etat==='En cours de modification' "
             [disabled]="Situation.Etat==='Version valide'"
            (click)="validate()"  >Valider la version</button> 
-          
+           
            <button class="btn btn-info " 
            *ngIf="(list?.length === 0 && selectedPoste) || Situation.Etat==='Version valide' "
              (click)="AddSituation()"
              [disabled]="test && list?.length !=0 ">Nouvelle version </button> 
-
+             &nbsp;&nbsp;
+             <button *ngIf="Situation.IdSituation" class="btn btn-primary"  (click)="export()" class="btn btn-info">Download Excel</button>  
       </div>
+     
     </mat-card-content> 
      
 </mat-card>  
-<app-emp-form 
-*ngIf="show"
-[IdPays]=selectedPays
-[IdPoste]=selectedPoste 
-[IdSituation]=selectedSit ></app-emp-form>
+<br>
+
+
+
+<mat-card *ngIf="show" >  
+        <!-- Title of an Card -->  
+        <mat-card-title>  
+           <h2>Ajouter un employee</h2>
+        </mat-card-title>  
+      <hr >
+        <!-- Actual content starts from here -->  
+        <mat-card-content align="center"> 
+                <form [formGroup]="form" (ngSubmit)="onSubmitModelBased()" autocomplete="off">
+                    <input type="hidden" formControlName="IdEmployee"  >
+                    <mat-grid-list cols="2" rowHeight="650px">
+                        <mat-grid-tile>
+                         <div class="controles-container">
+                        <p>
+                            <mat-form-field>
+                                <input matInput type="text" placeholder="Entrer votre nom" 
+                                formControlName="Nom">
+                                <mat-error *ngIf="form.controls['Nom'].errors?.required">Champs vide.</mat-error> 
+                                <mat-error *ngIf="form.controls['Nom'].errors?.minlength">caratere inf de 4.</mat-error>                          
+                            </mat-form-field> 
+                        </p>
+                        <p>
+                                <mat-form-field>
+                                    <input matInput type="text" placeholder="Entrer votre Prenom" 
+                                    formControlName="Prenom">
+                                                                    
+                                </mat-form-field>
+                        </p>
+                        <p>
+                            <mat-form-field >
+                                <mat-label>Entrer la gratification</mat-label>
+                                <input matInput  type="number"  
+                                  formControlName="gratification">
+                            </mat-form-field>
+                        </p>
+                        <p>
+                            <mat-form-field >
+                                        
+                                        <mat-label>Select Devise</mat-label>
+                                        <mat-select formControlName="selectedDevisee"  >
+                                        <mat-option *ngFor="let devise of devises " [value]="devise.IdDevise">
+                                         {{devise.Intiule}}
+                                        </mat-option>
+                                        </mat-select>
+                        </mat-form-field>
+                        </p>
+                        <p>
+                        <mat-form-field >
+                                        <mat-label>Entrer salaire en devise</mat-label>
+                                        <input matInput type="number" formControlName="saleD" (keyup)="onKey(SalD.value)" 
+                                         #SalD min="0" 
+                                        >
+                                        <span matPrefix>{{devise.Symbole}}&nbsp;</span>
+                                        
+                        </mat-form-field>
+                        </p>
+                        <p>
+                        <mat-form-field >
+                                        <mat-label>Salaire en DH</mat-label>
+                                        <input matInput [ngStyle]="{color : getColor()}" type="number"  
+                                         formControlName="salairee"
+                                          >
+                        </mat-form-field>
+                        </p>
+                         </div>
+                        </mat-grid-tile>
+                                  
+                        <mat-grid-tile>
+                        <div class="controles-container">
+                        <p>
+                                        <mat-form-field>
+                                                <input matInput [matDatepicker]="picker" 
+                                                placeholder="Date de recrutement"
+                                                formControlName="dateRecrutement"
+                                                (dateChange)="compareTwoDates()">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                        </p>
+                        
+                        
+                        <p>
+                            <mat-form-field >
+                                                        
+                                <mat-label>Select Fonction</mat-label>
+                                <mat-select formControlName="selectedF"  >
+                                <mat-option *ngFor="let fonction of fonctions" [value]="fonction.IdFonction">
+                                 {{fonction.NomFonction}}
+                                </mat-option>
+                                </mat-select>
+                           </mat-form-field>
+                        </p>
+                       
+                        <p>
+                            <mat-form-field >
+                                                        
+                                <mat-label>Select Categorie</mat-label>
+                                <mat-select formControlName="selectedC" >
+                                <mat-option *ngFor="let categorie of categories" [value]="categorie.IdCategorie">
+                                 {{categorie.NomCategorie}}
+                                </mat-option>
+                                </mat-select>
+                           </mat-form-field>
+                        </p>
+                        <p>
+                                <mat-form-field >
+                                    <textarea matInput placeholder="Observations" 
+                                    formControlName="observation"></textarea>
+                                </mat-form-field>
+                        </p>   
+                        </div>
+                        </mat-grid-tile>
+                        </mat-grid-list>
+                        
+                        <p>
+                                <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Ajouter</button>
+                        </p>
+                    </form>
+                    <button type="submit" class="btn btn-info btn-lg"  (click)="reset()">Effacer</button>
+                    &nbsp;&nbsp;
+                    <button type="submit" class="btn btn-secondary btn-lg"  (click)="retour()">Retour</button>
+        </mat-card-content>
+</mat-card>

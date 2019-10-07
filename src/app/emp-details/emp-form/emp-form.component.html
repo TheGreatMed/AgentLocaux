@@ -1,7 +1,150 @@
-<p>{{IdPays}}</p>
-<p>{{IdPoste}}</p>
-<p>{{IdSituation}}</p>
-<mat-form-field >
-        <input matInput type="text" placeholder="Code de Poste" name="CodePoste"
-        disabled  >
-</mat-form-field>
+<mat-card-content> 
+                <form #form="ngForm" autocomplete="off"
+                (ngSubmit)="onSubmit(form)"> 
+                <input type="hidden" [value]="employee.IdEmployee" > 
+                                <table>
+                                                <tr>
+                                                        <td>
+                                                                <mat-form-field>
+                                                                        <input matInput type="text" placeholder="Entrer votre nom" name="nom"
+                                                                                required #nom="ngModel" [(ngModel)]="employee.Nom">
+                                                                                            
+                                                                </mat-form-field> 
+                                                        </td>
+                                                        <td>
+                                                                <mat-form-field>
+                                                                        <input matInput type="text" placeholder="Entrer votre Prenom" name="prenom"
+                                                                                required #prenom="ngModel" [(ngModel)]="employee.Prenom">
+                                                                                                    
+                                                                </mat-form-field> 
+                                                        </td>
+                                                        <td>
+                                                                        <mat-form-field>
+                                                                                        <input matInput [matDatepicker]="picker" 
+                                                                                        placeholder="Date de recrutement" required name="dateR" #dateR="ngModel"
+                                                                                        [(ngModel)]="employee.DateRecrutement">
+                                                                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                                                        <mat-datepicker #picker></mat-datepicker>
+                                                                        </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                                        <mat-form-field>
+                                                                                        <input matInput [matDatepicker]="DD" 
+                                                                                        placeholder="Date de debut" required name="dateD" #dateD="ngModel"
+                                                                                        [(ngModel)]="employee.DateDebut">
+                                                                                        <mat-datepicker-toggle matSuffix [for]="DD"></mat-datepicker-toggle>
+                                                                                        <mat-datepicker #DD></mat-datepicker>
+                                                                        </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                                        <mat-form-field>
+                                                                                        <input matInput [matDatepicker]="DF" 
+                                                                                        placeholder="Date de fin" required name="dateF" #dateF="ngModel"
+                                                                                        [(ngModel)]="employee.DateFin" min="{{employee.DateDebut}}">
+                                                                                        <mat-datepicker-toggle matSuffix [for]="DF"></mat-datepicker-toggle>
+                                                                                        <mat-datepicker #DF></mat-datepicker>
+                                                                        </mat-form-field>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                     <td>
+                                                                <mat-form-field >
+                                                                                <mat-label>Pays selectionne</mat-label>
+                                                                                <input matInput type="text"  name="pays" value="{{pays.NomPays}}"
+                                                                                disabled  >
+                                                                </mat-form-field>
+                                                     </td>
+                                                     <td>
+                                                                <mat-form-field >  
+                                                                                <mat-label>Poste selectionne</mat-label>                              
+                                                                                <input matInput type="text"  name="pays" value="{{poste.NomPoste}}"
+                                                                                disabled  >
+                                                                </mat-form-field>
+                                                     </td>
+                                                     <td>
+                                                                <mat-form-field >
+                                                                                <mat-label>Entrer la gratification</mat-label>
+                                                                                <input matInput type="number" required  
+                                                                                 name="gratification" #gratification="ngModel" min="0" [(ngModel)]="employee.gratification"
+                                                                                 >
+                                                                </mat-form-field>
+                                                </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>
+                                                        <mat-form-field >
+                                        
+                                                                        <mat-label>Select Devise</mat-label>
+                                                                        <mat-select required [(ngModel)]="selectedDevise" (ngModelChange)="selectedDevise= $event" (ngModelChange)="onDeviseChange()" name="devise" #devise="ngModel" >
+                                                                        <mat-option *ngFor="let devise of devises " [value]="devise.IdDevise">
+                                                                         {{devise.Intiule}}----{{devise.Symbole}}
+                                                                        </mat-option>
+                                                                        </mat-select>
+                                                        </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                                        <mat-form-field >
+                                                                                        <mat-label>Entrer salaire en devise</mat-label>
+                                                                                        <input matInput type="number" required (keyup)="onKey(SalD.value)" 
+                                                                                         name="SalD" #SalD="ngModel" min="0" [(ngModel)]="salD"
+                                                                                         [disabled]="teste">
+                                                                        </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                                        <mat-form-field >
+                                                        
+                                                                                        <mat-label>Select Fonction</mat-label>
+                                                                                        <mat-select required [(ngModel)]="employee.IdFonction" name="fonction" #fonction="ngModel" >
+                                                                                        <mat-option *ngFor="let fonction of fonctions" [value]="fonction.IdFonction">
+                                                                                         {{fonction.NomFonction}}
+                                                                                        </mat-option>
+                                                                                        </mat-select>
+                                                                        </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                                        <mat-form-field >
+                                                        
+                                                                                        <mat-label>Select Categorie</mat-label>
+                                                                                        <mat-select required [(ngModel)]="employee.IdCategorie" name="categorie" #categorie="ngModel" >
+                                                                                        <mat-option *ngFor="let categorie of categories" [value]="categorie.IdCategorie">
+                                                                                         {{categorie.NomCategorie}}
+                                                                                        </mat-option>
+                                                                                        </mat-select>
+                                                                        </mat-form-field>
+                                                        </td>
+                                                        <td>
+                                                                        <mat-form-field >
+                                                                                        <textarea matInput placeholder="Observations" required name="observation" 
+                                                                                        #observation="ngModel" [(ngModel)]="employee.Observation"></textarea>
+                                                                        </mat-form-field>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>
+                                                                        <mat-form-field >
+                                                                                        <mat-label>Salaire en DH</mat-label>
+                                                                                        <input matInput [ngStyle]="{color : getColor()}" type="number"  name="salaire" [(value)]="salaire"
+                                                                                        disabled  >
+                                                                        </mat-form-field>
+                                                        </td>
+                                                </tr>
+                                        </table>
+                 <mat-card-actions align="center">
+                        <button id="b1" class="btn btn-success btn-block"   color="primary" [disabled]="form.invalid">
+                                        <span class="fas fa-plus"></span> 
+                         Ajouter</button>
+                        
+                </mat-card-actions>
+                </form>
+                <button id="b2" class="btn btn-info btn-block"   color="primary" (click)="retour()">
+                                <span class="fas fa-plus"></span> 
+                 Retour</button>
+
+</mat-card-content>
+
+
+       
+        
+        
+        
+       

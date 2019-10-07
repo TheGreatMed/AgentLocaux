@@ -13,8 +13,14 @@ export class EmpServiceService {
    }
 
     get(id){
-     this.http.get('http://localhost:61823/api/Employee/affect/'+id)
-     .toPromise()
-     .then(res => this.employees= res as Employee[]);
+    return this.http.get('http://localhost:61823/api/Employee/affect/'+id);
+   }
+
+   addEmployee(employee:Employee,id){
+     return this.http.put('http://localhost:61823/api/Employee/add/'+id,employee);
+   }
+
+   deleteEmployee(id){
+    return this.http.delete('http://localhost:61823/api/Employee/'+id);
    }
 }

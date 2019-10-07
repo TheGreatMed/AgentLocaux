@@ -28,6 +28,11 @@ export class PosteServiceService {
      console.log(this.poste.IdPoste);
     return  this.http.put('http://localhost:61823/api/Poste/'+this.poste.IdPoste,this.poste);
    }
+
+   getPoste(id){
+    return this.http.get('http://localhost:61823/api/Poste/'+id);
+   }
+
    getPosteByIdPays(id:number){
     this.http.get('http://localhost:61823/api/Poste/find/'+id)
     .toPromise()

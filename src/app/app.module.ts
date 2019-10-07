@@ -1,8 +1,17 @@
+import { LoginServiceService } from './Services/login-service.service';
+import { CategorieServiceService } from './Services/categorie-service.service';
+import { FonctionServiceService } from './Services/fonction-service.service';
+import { DeviseServiceService } from './Services/devise-service.service';
 import { EmpServiceService } from './Services/emp-service.service';
-
-
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+
+// the second parameter 'fr' is optional
+registerLocaleData(localeFr, 'fr');
+import {ReactiveFormsModule} from "@angular/forms";
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
@@ -22,6 +31,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -40,8 +50,11 @@ import { PosteDetailsComponent } from './poste-details/poste-details.component';
 import { PosteDetailComponent } from './poste-details/poste-detail/poste-detail.component';
 import { PosteListComponent } from './poste-details/poste-list/poste-list.component';
 import { EmpFormComponent } from './emp-details/emp-form/emp-form.component';
-
-
+import { MatNativeDateModule } from '@angular/material/core';
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {} from 'jwt-decode';
 
 @NgModule({
   declarations: [
@@ -52,6 +65,8 @@ import { EmpFormComponent } from './emp-details/emp-form/emp-form.component';
     PosteDetailComponent,
     PosteListComponent,
     EmpFormComponent,
+    LoginComponent,
+    HomeComponent,
     
   ],
   imports: [
@@ -78,10 +93,24 @@ import { EmpFormComponent } from './emp-details/emp-form/emp-form.component';
     MatSortModule,
     MatGridListModule,
     MatPaginatorModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(
+      {
+        progressBar:true
+      }
+    ),
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    FlexLayoutModule
+    
     
   ],
-  providers: [PaysServiceService,PosteServiceService,SituationServiceService,EmpServiceService],
+  providers: [PaysServiceService,PosteServiceService,
+    SituationServiceService,EmpServiceService,LoginServiceService,
+    DeviseServiceService,FonctionServiceService,CategorieServiceService,
+    { 
+      provide: LOCALE_ID, useValue: "fr"
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

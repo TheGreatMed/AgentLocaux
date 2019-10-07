@@ -16,4 +16,8 @@ export class PaysServiceService {
     .toPromise()
     .then(res => this.liste= res as Pays[]);
   }
+
+  getPays(id){
+    return this.http.get('http://localhost:61823/api/Pays/'+id);
+  }
 }
